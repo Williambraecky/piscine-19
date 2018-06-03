@@ -1,0 +1,140 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   sudoku_advanced.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wbraeckm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/05/13 14:09:11 by wbraeckm          #+#    #+#             */
+/*   Updated: 2018/05/13 16:17:34 by wbraeckm         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "sudoku.h"
+
+extern struct s_udoku g_sudoku;
+
+void	ft_remove_possibilities(int section, int i, int type, int j)
+{
+	int k;
+
+	k = 0;
+	while (k < 10)
+	{
+		if (type == ROW)
+		{
+			if (k > section % 10 * j && k < section % 10 * j + 3)
+				g_sudoku.possibilities[j][k][i] = FALSE;
+		}
+		else
+		{
+			if (k > section / 10 * j && k < section / 10 * j + 3)
+				g_sudoku.possibilities[k][j][i] = FALSE;
+		}
+		k++;
+	}
+}
+
+void	ft_compute_result(int tab[3][9], int s_x, int s_y, int type)
+{
+	int i;
+	int j;
+	int k;
+	int l;
+
+	i = -1;
+	while (++i < 9)
+	{
+		j = -1;
+		k = 0;
+		while (++j < 3)
+		{
+			if (tab[j][i] == TRUE)
+			{
+				l = i;
+				k++;
+			}
+		}
+		if (k > 1)
+			continue ;
+		if (type == ROW)
+			ft_remove_possibilities(s_x * 10 + s_y, k, type, s_x * 3);
+		else
+			ft_remove_possibilities(s_x * 10 + s_y, k, type, s_y * 3);
+	}
+}
+
+void	ft_compute_column(int s_x, int s_y)
+{
+	int tab[3][9];
+	int i;
+	int j;
+	int k;
+	int l;
+
+	i = -1;
+	while (++i < 3)
+	{
+		j = -1;
+		while (++j < 3)
+		{
+			k = -1;
+			while (++k < 9)
+			{
+				if (g_sudoku.grid[i][s_y * 3 + i] == 0)
+				{
+					l = g_sudoku.possibilities[i][s_y * 3 + j][k - 1];
+					tab[i][k - 1] = l;
+				}
+			}
+		}
+	}
+	ft_compute_result(tab, s_x, s_y, COLUMN);
+}
+
+void	ft_compute_row(int s_x, int s_y)
+{
+	int tab[3][9];
+	int i;
+	int j;
+	int k;
+	int l;
+
+	i = -1;
+	while (++i < 3)
+	{
+		j = -1;
+		while (++j < 3)
+		{
+			k = -1;
+			while (++k < 9)
+			{
+				if (g_sudoku.grid[s_x * 3 + i][j] == 0)
+				{
+					l = g_sudoku.possibilities[s_x * 3 + i][j][k - 1];
+					tab[i][k - 1] = l;
+				}
+			}
+		}
+	}
+	ft_compute_result(tab, s_x, s_y, ROW);
+}
+
+void	ft_compute_possibilities(void)
+{
+	int i;
+	int j;
+
+	i = 0;
+	while (i < 3)
+	{
+		j = 0;
+		while (j < 3)
+		{
+			ft_compute_column(i, j);
+			ft_compute_row(i, j);
+			j++;
+		}
+		i++;
+	}
+}
