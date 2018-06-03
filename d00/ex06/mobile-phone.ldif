@@ -1,0 +1,4 @@
+dn: uid=wbraeckm,ou=candidate,ou=people,dc=s19,dc=be
+changetype: modify
+add: mobile
+mobile: +32 494 67 26 75

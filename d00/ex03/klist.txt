@@ -1,0 +1,7 @@
+Credentials cache: API:103
+        Principal: wbraeckm@S19.BE
+
+  Issued                Expires               Principal
+Apr 30 12:51:38 2018  Apr 30 22:51:38 2018  krbtgt/S19.BE@S19.BE
+Apr 30 12:51:39 2018  Apr 30 22:51:38 2018  ldap/ldap-master.s19.be@S19.BE
+Apr 30 12:51:39 2018  Apr 30 22:51:38 2018  HTTP/san-ssd.s19.be@S19.BE
