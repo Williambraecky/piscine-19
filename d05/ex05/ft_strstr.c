@@ -10,12 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+int		ft_strlen(char *str)
+{
+	int i;
+
+	i = 0;
+	while (*(str + i))
+		i++;
+	return (i);
+}
+
 char	*ft_strstr(char *str, char *to_find)
 {
 	int i;
 	int j;
 	
 	i = 0;
+	if (ft_strlen(to_find) == 0)
+		return (str);
 	while (str[i] != '\0' && (j = 0) == 0)
 	{
 		while (str[i + j] == to_find[j])
